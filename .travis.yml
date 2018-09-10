@@ -1,0 +1,27 @@
+language: php
+
+php:
+  - '7.1'
+  - '7.2'
+  - nightly
+
+env:
+  matrix:
+    - PREFER_LOWEST="--prefer-lowest --prefer-stable"
+    - PREFER_LOWEST=""
+
+before_install:
+- composer install --dev
+
+before_script: 
+- composer update $PREFER_LOWEST
+- curl -L https://codeclimate.com/downloads/test-reporter/test-reporter-latest-linux-amd64 > ./cc-test-reporter
+- chmod +x ./cc-test-reporter 
+- ./cc-test-reporter before-build
+ 
+script:
+- ./vendor/bin/phpunit --coverage-clover ./build/logs/clover.xml --configuration phpunit-travis.xml
+
+after_script: 
+- mv build/logs/clover.xml clover.xml 
+- ./cc-test-reporter after-build --coverage-input-type clover --id $CODECLIMATE_REPO_TOKEN --exit-code $TRAVIS_TEST_RESULT
