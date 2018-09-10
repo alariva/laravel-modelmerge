@@ -2,6 +2,8 @@
 
 namespace Alariva\ModelMerge;
 
+use Alariva\ModelMerge\Strategies\MergeSimple;
+use Alariva\ModelMerge\Strategies\ModelMergeStrategy;
 use Illuminate\Database\Eloquent\Model;
 
 class ModelMerge
@@ -19,6 +21,32 @@ class ModelMerge
      * @var Illuminate\Database\Eloquent\Model
      */
     protected $modelB;
+
+    /**
+     * Merge strategy implementation.
+     * 
+     * @var [type]
+     */
+    protected $strategy;
+
+    public function __construct($strategy = null)
+    {
+        $this->useStrategy($strategy);
+    }
+
+    /**
+     * Pick a strategy class for merge operation.
+     * 
+     * @param  Alariva\ModelMerge\Strategies\ModelMergeStrategy $strategy   Instance of a merger strategy
+     * 
+     * @return $this
+     */
+    public function useStrategy(ModelMergeStrategy $strategy = null)
+    {
+        $this->strategy = $strategy === null ? new MergeSimple() : $strategy;
+
+        return $this;
+    }
 
     /**
      * Set model A
@@ -55,13 +83,6 @@ class ModelMerge
      */
     public function merge()
     {
-        $dataA = $this->modelA->toArray();
-        $dataB = $this->modelB->toArray();
-
-        $dataMerge = array_merge($dataA, $dataB);
-
-        $this->modelA->fill($dataMerge);
-
-        return $this->modelA;
+        return $this->strategy->merge($this->modelA, $this->modelB);
     }
 }

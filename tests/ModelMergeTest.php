@@ -3,6 +3,7 @@
 namespace Tests;
 
 use Alariva\ModelMerge\ModelMerge;
+use Alariva\ModelMerge\Strategies\MergeSimple;
 use Illuminate\Database\Eloquent\Model;
 
 class ModelMergeTest extends BaseTestCase
@@ -25,6 +26,22 @@ class ModelMergeTest extends BaseTestCase
         $modelB = DummyContact::make(['firstname' => 'John', 'lastname' => 'Doe']);
 
         $modelMerge = new ModelMerge();
+        $modelMerge->setModelA($modelA)->setModelB($modelB);
+        $mergedModel = $modelMerge->merge();
+
+        $this->assertEquals($mergedModel->firstname, 'John');
+        $this->assertEquals($mergedModel->lastname, 'Doe');
+        $this->assertEquals($mergedModel->age, 33);
+    }
+
+    public function test_it_allows_an_external_strategy_class()
+    {
+        $modelA = DummyContact::make(['firstname' => 'John', 'age' => 33]);
+        $modelB = DummyContact::make(['firstname' => 'John', 'lastname' => 'Doe']);
+
+        $strategy = new MergeSimple;
+
+        $modelMerge = new ModelMerge($strategy);
         $modelMerge->setModelA($modelA)->setModelB($modelB);
         $mergedModel = $modelMerge->merge();
 
