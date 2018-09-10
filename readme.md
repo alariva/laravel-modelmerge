@@ -1,9 +1,12 @@
 # ModelMerge Laravel package
 
-[![License](https://img.shields.io/github/license/alariva/laravel-modelmerge.svg?style=flat-square)](https://github.com/alariva/laravel-modelmerge)
+[![Latest Stable Version](https://poser.pugx.org/alariva/modelmerge/v/stable?format=flat)](https://packagist.org/packages/alariva/modelmerge)
+[![Total Downloads](https://poser.pugx.org/alariva/modelmerge/downloads?format=flat)](https://packagist.org/packages/alariva/modelmerge)
+[![Latest Unstable Version](https://poser.pugx.org/alariva/modelmerge/v/unstable?format=flat)](https://packagist.org/packages/alariva/modelmerge)
 [![Build Status](https://travis-ci.org/alariva/laravel-modelmerge.svg?branch=master)](https://travis-ci.org/alariva/laravel-modelmerge)
 [![Maintainability](https://api.codeclimate.com/v1/badges/f8829aab2f787e403d3e/maintainability)](https://codeclimate.com/github/alariva/laravel-modelmerge/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/f8829aab2f787e403d3e/test_coverage)](https://codeclimate.com/github/alariva/laravel-modelmerge/test_coverage)
+[![License](https://poser.pugx.org/alariva/modelmerge/license?format=flat)](https://packagist.org/packages/alariva/modelmerge)
 
 Easy merging for Eloquent Models.
 
