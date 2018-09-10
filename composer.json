@@ -9,7 +9,7 @@
             "homepage": "https://alariva.com"
         }
     ],
-    "homepage": "https://github.com/alariva/modelmerge",
+    "homepage": "https://github.com/alariva/laravel-modelmerge",
     "keywords": ["Laravel", "ModelMerge"],
     "require": {
         "illuminate/support": "~5"
