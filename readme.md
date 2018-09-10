@@ -56,6 +56,8 @@ If you discover any security related issues, please email author email instead o
 ## Credits
 
 - [Ariel Vallese](https://alariva.com)
+- Icons made by [Freepik](http://www.freepik.com) from [Flaticon](http://www.flaticon.com) is licensed by [CC 3.0 BY](http://creativecommons.org/licenses/by/3.0/)
+- Icons made by [Roundicons](https://www.flaticon.com/authors/roundicons) from [Flaticon](http://www.flaticon.com) is licensed by [CC 3.0 BY](http://creativecommons.org/licenses/by/3.0/)
 
 ## License
 
