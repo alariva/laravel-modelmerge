@@ -48,8 +48,7 @@ If you discover any security related issues, please email author email instead o
 
 ## Credits
 
-- [Ariel Vallese][https://alariva.com]
-- [All Contributors][link-contributors]
+- [Ariel Vallese](https://alariva.com)
 
 ## License
 
