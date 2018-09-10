@@ -1,11 +1,11 @@
-# ModelMerge
+# ModelMerge Laravel package
 
-[![Latest Version on Packagist][ico-version]][link-packagist]
-[![Total Downloads][ico-downloads]][link-downloads]
-[![Build Status][ico-travis]][link-travis]
-[![StyleCI][ico-styleci]][link-styleci]
+[![License](https://img.shields.io/github/license/alariva/laravel-modelmerge.svg?style=flat-square)](https://github.com/alariva/laravel-modelmerge)
+[![Build Status](https://travis-ci.org/alariva/laravel-modelmerge.svg?branch=master)](https://travis-ci.org/alariva/laravel-modelmerge)
+[![Maintainability](https://api.codeclimate.com/v1/badges/f8829aab2f787e403d3e/maintainability)](https://codeclimate.com/github/alariva/laravel-modelmerge/maintainability)
+[![Test Coverage](https://api.codeclimate.com/v1/badges/f8829aab2f787e403d3e/test_coverage)](https://codeclimate.com/github/alariva/laravel-modelmerge/test_coverage)
 
-ModelMerge is a Laravel package for merging Eloquent Models.
+Easy merging for Eloquent Models.
 
 ## Installation
 
@@ -16,6 +16,17 @@ $ composer require alariva/modelmerge
 ```
 
 ## Usage
+
+```php
+    $modelA = SampleModel::make(['firstname' => 'John', 'age' => 33]);
+    $modelB = SampleModel::make(['firstname' => 'John', 'lastname' => 'Doe']);
+
+    $mergedModel = ModelMerge::setModelA($modelA)->setModelB($modelB)->merge();
+
+    $mergedModel->firstname; // John
+    $mergedModel->lastname; // Doe
+    $mergedModel->age; // 33
+```
 
 ## Change log
 
@@ -43,15 +54,3 @@ If you discover any security related issues, please email author email instead o
 ## License
 
 MIT. Please see the [license file](license.md) for more information.
-
-[ico-version]: https://img.shields.io/packagist/v/alariva/modelmerge.svg?style=flat-square
-[ico-downloads]: https://img.shields.io/packagist/dt/alariva/modelmerge.svg?style=flat-square
-[ico-travis]: https://img.shields.io/travis/alariva/laravel-modelmerge/master.svg?style=flat-square
-[ico-styleci]: https://styleci.io/repos/12345678/shield
-
-[link-packagist]: https://packagist.org/packages/alariva/modelmerge
-[link-downloads]: https://packagist.org/packages/alariva/modelmerge
-[link-travis]: https://travis-ci.org/alariva/laravel-modelmerge
-[link-styleci]: https://styleci.io/repos/12345678
-[link-author]: https://github.com/alariva
-[link-contributors]: ../../contributors]
