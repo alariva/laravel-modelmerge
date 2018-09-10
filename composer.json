@@ -1,0 +1,41 @@
+{
+    "name": "alariva/modelmerge",
+    "description": "A Laravel package for Merging Eloquent Models",
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Ariel Vallese",
+            "email": "alariva@gmail.com",
+            "homepage": "https://alariva.com"
+        }
+    ],
+    "homepage": "https://github.com/alariva/modelmerge",
+    "keywords": ["Laravel", "ModelMerge"],
+    "require": {
+        "illuminate/support": "~5"
+    },
+    "require-dev": {
+        "phpunit/phpunit": "~6.0",
+        "orchestra/testbench": "~3.0"
+    },
+    "autoload": {
+        "psr-4": {
+            "Alariva\\ModelMerge\\": "src/"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Alariva\\ModelMerge\\Tests\\": "tests"
+        }
+    },
+    "extra": {
+        "laravel": {
+            "providers": [
+                "Alariva\\ModelMerge\\ModelMergeServiceProvider"
+            ],
+            "aliases": {
+                "ModelMerge": "Alariva\\ModelMerge\\Facades\\ModelMerge"
+            }
+        }
+    }
+}
