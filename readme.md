@@ -10,6 +10,10 @@
 
 Easy merging for Eloquent Models.
 
+<p align="center">
+<img src="https://i.imgur.com/iT0vLSC.png" height="275">
+</p>
+
 ## Installation
 
 Via Composer
