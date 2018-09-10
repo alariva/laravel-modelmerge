@@ -5,7 +5,7 @@
 [![Build Status][ico-travis]][link-travis]
 [![StyleCI][ico-styleci]][link-styleci]
 
-This is where your description should go. Take a look at [contributing.md](contributing.md) to see a to do list.
+ModelMerge is a Laravel package for merging Eloquent Models.
 
 ## Installation
 
@@ -37,21 +37,21 @@ If you discover any security related issues, please email author email instead o
 
 ## Credits
 
-- [author name][link-author]
+- [Ariel Vallese][https://alariva.com]
 - [All Contributors][link-contributors]
 
 ## License
 
-license. Please see the [license file](license.md) for more information.
+MIT. Please see the [license file](license.md) for more information.
 
 [ico-version]: https://img.shields.io/packagist/v/alariva/modelmerge.svg?style=flat-square
 [ico-downloads]: https://img.shields.io/packagist/dt/alariva/modelmerge.svg?style=flat-square
-[ico-travis]: https://img.shields.io/travis/alariva/modelmerge/master.svg?style=flat-square
+[ico-travis]: https://img.shields.io/travis/alariva/laravel-modelmerge/master.svg?style=flat-square
 [ico-styleci]: https://styleci.io/repos/12345678/shield
 
 [link-packagist]: https://packagist.org/packages/alariva/modelmerge
 [link-downloads]: https://packagist.org/packages/alariva/modelmerge
-[link-travis]: https://travis-ci.org/alariva/modelmerge
+[link-travis]: https://travis-ci.org/alariva/laravel-modelmerge
 [link-styleci]: https://styleci.io/repos/12345678
 [link-author]: https://github.com/alariva
 [link-contributors]: ../../contributors]
