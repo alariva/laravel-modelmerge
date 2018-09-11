@@ -39,7 +39,7 @@ class ModelMergeTest extends BaseTestCase
         $modelA = DummyContact::make(['firstname' => 'John', 'age' => 33]);
         $modelB = DummyContact::make(['firstname' => 'John', 'lastname' => 'Doe']);
 
-        $strategy = new MergeSimple;
+        $strategy = new MergeSimple();
 
         $modelMerge = new ModelMerge($strategy);
         $modelMerge->setModelA($modelA)->setModelB($modelB);
@@ -50,16 +50,44 @@ class ModelMergeTest extends BaseTestCase
         $this->assertEquals($mergedModel->age, 33);
     }
 
-    public function test_it_verifies_identity_compound_key_before_merge()
+    public function test_it_verifies_nok_identity_compound_key_before_merge()
     {
         $modelA = DummyContact::make(['firstname' => 'John', 'lastname' => 'Doe', 'age' => 33]);
         $modelB = DummyContact::make(['firstname' => 'John', 'lastname' => 'Other', 'age' => 33, 'phone' => '+1 123 456 789']);
 
-        $modelMerge = new ModelMerge(new MergeSimple);
+        $modelMerge = new ModelMerge(new MergeSimple());
         $modelMerge->withKey(['firstname', 'lastname', 'age'])->setModelA($modelA)->setModelB($modelB);
 
         $this->expectException(\Alariva\ModelMerge\Exceptions\ModelsNotDupeException::class);
 
         $mergedModel = $modelMerge->merge();
+    }
+
+    public function test_it_verifies_nok_identity_compound_key_before_merge_passed_as_string()
+    {
+        $modelA = DummyContact::make(['firstname' => 'John', 'lastname' => 'Doe', 'age' => 33]);
+        $modelB = DummyContact::make(['firstname' => 'John', 'lastname' => 'Other', 'age' => 33, 'phone' => '+1 123 456 789']);
+
+        $modelMerge = new ModelMerge(new MergeSimple());
+        $modelMerge->withKey('lastname')->setModelA($modelA)->setModelB($modelB);
+
+        $this->expectException(\Alariva\ModelMerge\Exceptions\ModelsNotDupeException::class);
+
+        $mergedModel = $modelMerge->merge();
+    }
+
+    public function test_it_verifies_ok_identity_compound_key_before_merge_passed_as_string()
+    {
+        $modelA = DummyContact::make(['firstname' => 'John', 'lastname' => 'Doe', 'age' => 33]);
+        $modelB = DummyContact::make(['firstname' => 'John', 'lastname' => 'Doe', 'age' => 33, 'phone' => '+1 123 456 789']);
+
+        $modelMerge = new ModelMerge(new MergeSimple());
+        $modelMerge->withKey('lastname')->setModelA($modelA)->setModelB($modelB);
+
+        $mergedModel = $modelMerge->merge();
+
+        $this->assertEquals($mergedModel->firstname, 'John');
+        $this->assertEquals($mergedModel->lastname, 'Doe');
+        $this->assertEquals($mergedModel->age, 33);
     }
 }
