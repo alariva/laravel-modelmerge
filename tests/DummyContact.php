@@ -9,5 +9,5 @@ use Illuminate\Database\Eloquent\Model;
  */
 class DummyContact extends Model
 {
-    protected $fillable = ['firstname', 'lastname', 'age'];
+    protected $fillable = ['firstname', 'lastname', 'age', 'phone'];
 }
