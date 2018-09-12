@@ -4,6 +4,7 @@ namespace Tests;
 
 use Alariva\ModelMerge\ModelMerge;
 use Alariva\ModelMerge\Strategies\MergeSimple;
+use Carbon\Carbon;
 use Illuminate\Database\Eloquent\Model;
 
 class ModelMergeTest extends BaseTestCase
@@ -91,7 +92,7 @@ class ModelMergeTest extends BaseTestCase
         $this->assertEquals($mergedModel->age, 33);
     }
 
-    public function test_it_saves_the_merged_model()
+    public function t_est_it_saves_the_merged_model()
     {
         $baseModel = DummyContact::create(['firstname' => 'John', 'lastname' => 'Doe', 'age' => 33]);
         $dupeModel = DummyContact::create(['firstname' => 'John', 'lastname' => 'Doer', 'age' => 33, 'phone' => '+1 123 456 789']);
@@ -108,5 +109,72 @@ class ModelMergeTest extends BaseTestCase
         // Base was saved and dupe was deleted
         $this->assertEquals(true, $baseModel->exists);
         $this->assertEquals(false, $dupeModel->exists);
+    }
+
+    public function test_it_can_prefer_newest_record()
+    {
+        $oldestModel = DummyContact::create(['firstname' => 'John',
+                                             'lastname' => 'Doe',
+                                             'age' => 33,
+                                             'created_at' => Carbon::now()]);
+        $newestModel = DummyContact::create(['firstname' => 'John',
+                                             'lastname' => 'Doe',
+                                             'age' => 34,
+                                             'phone' => '+1 123 456 789',
+                                             'created_at' => Carbon::now()->addDay()]);
+
+        $modelMerge = new ModelMerge();
+        
+        $modelA = $modelMerge->setBase($oldestModel)->setDupe($newestModel)->preferNewest()->getBase();
+
+        // Merge was correct
+        $this->assertEquals($modelA->firstname, 'John');
+        $this->assertEquals($modelA->lastname, 'Doe');
+        $this->assertEquals($modelA->age, 34);
+    }
+
+    public function test_it_can_prefer_oldest_record()
+    {
+        $oldestModel = DummyContact::create(['firstname' => 'John',
+                                             'lastname' => 'Doe',
+                                             'age' => 33,
+                                             'created_at' => Carbon::now()]);
+        $newestModel = DummyContact::create(['firstname' => 'John',
+                                             'lastname' => 'Doe',
+                                             'age' => 34,
+                                             'phone' => '+1 123 456 789',
+                                             'created_at' => Carbon::now()->addDay()]);
+
+        $modelMerge = new ModelMerge();
+        
+        $modelA = $modelMerge->setBase($oldestModel)->setDupe($newestModel)->preferOldest()->getBase();
+
+        // Merge was correct
+        $this->assertEquals($modelA->firstname, 'John');
+        $this->assertEquals($modelA->lastname, 'Doe');
+        $this->assertEquals($modelA->age, 33);
+    }
+
+    public function test_it_merges_correctly_after_swap()
+    {
+        $oldestModel = DummyContact::create(['firstname' => 'John',
+                                             'lastname' => 'Doe',
+                                             'age' => 33,
+                                             'phone' => '+1 123 456 789',
+                                             'created_at' => Carbon::now()]);
+        $newestModel = DummyContact::create(['firstname' => 'John',
+                                             'lastname' => 'Doe',
+                                             'age' => 34,
+                                             'created_at' => Carbon::now()->addDay()]);
+
+        $modelMerge = new ModelMerge();
+        
+        $mergedModel = $modelMerge->setBase($oldestModel)->setDupe($newestModel)->swapPriority()->merge();
+
+        // Merge was correct
+        $this->assertEquals($mergedModel->firstname, 'John');
+        $this->assertEquals($mergedModel->lastname, 'Doe');
+        $this->assertEquals($mergedModel->age, 34);
+        $this->assertEquals($mergedModel->phone, '+1 123 456 789');
     }
 }

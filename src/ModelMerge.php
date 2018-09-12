@@ -70,6 +70,26 @@ class ModelMerge
         return $this;
     }
 
+    public function getModelA()
+    {
+        return $this->modelA;
+    }
+
+    public function getModelB()
+    {
+        return $this->modelB;
+    }
+
+    public function getBase()
+    {
+        return $this->getModelA();
+    }
+
+    public function getDupe()
+    {
+        return $this->getModelB();
+    }
+
     /**
      * Set model B
      * 
@@ -156,6 +176,49 @@ class ModelMerge
         $this->modelB->delete();
 
         return $this->modelA;
+    }
+
+    /**
+     * Prefer the oldest of the models to be preserved
+     * 
+     * @return $this
+     */
+    public function preferOldest()
+    {
+        if ($this->modelB->created_at < $this->modelA->created_at){
+            $this->swapPriority();
+        }
+
+        return $this;
+    }
+
+    /**
+     * Prefer the newest of the models to be preserved
+     * 
+     * @return $this
+     */
+    public function preferNewest()
+    {
+        if ($this->modelB->created_at > $this->modelA->created_at){
+            $this->swapPriority();
+        }
+
+        return $this;
+    }
+
+    /**
+     * Swap models from base to dupe and vice versa
+     * 
+     * @return $this
+     */
+    public function swapPriority()
+    {
+        $tmp = $this->modelA;
+
+        $this->modelA = $this->modelB;
+        $this->modelB = $tmp;
+
+        return $this;
     }
 
     protected function validateKeys()

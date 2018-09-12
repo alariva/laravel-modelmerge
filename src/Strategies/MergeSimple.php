@@ -11,7 +11,7 @@ class MergeSimple implements ModelMergeStrategy
         $dataA = $modelA->toArray();
         $dataB = $modelB->toArray();
 
-        $dataMerge = array_merge($dataA, $dataB);
+        $dataMerge = array_merge($dataB, $dataA);
 
         $modelA->fill($dataMerge);
 
