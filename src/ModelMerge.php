@@ -85,6 +85,30 @@ class ModelMerge
     }
 
     /**
+     * Alias for setModelA
+     *
+     * @param Model $baseModel
+     */
+    public function setBase($baseModel)
+    {
+        $this->setModelA($baseModel);
+
+        return $this;
+    }
+
+    /**
+     * Alias for setModelB
+     *
+     * @param Model $dupeModel
+     */
+    public function setDupe($dupeModel)
+    {
+        $this->setModelB($dupeModel);
+
+        return $this;
+    }
+
+    /**
      * Specify a compound key to match models and verify identity.
      * 
      * @param  string|array $keys Keys that make the model identifiable
@@ -114,6 +138,24 @@ class ModelMerge
         $this->validateKeys();
 
         return $this->strategy->merge($this->modelA, $this->modelB);
+    }
+
+    /**
+     * Executes the merge and performs save/delete accordingly to preserve base and discard dupe
+     *
+     * @return Illuminate\Database\Eloquent\Model The model A (base)
+     */
+    public function unifyOnBase()
+    {
+        $mergeModel = $this->merge();
+
+        $this->modelA->fill($mergeModel->toArray());
+
+        $this->modelA->save();
+
+        $this->modelB->delete();
+
+        return $this->modelA;
     }
 
     protected function validateKeys()

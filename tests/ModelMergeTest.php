@@ -90,4 +90,23 @@ class ModelMergeTest extends BaseTestCase
         $this->assertEquals($mergedModel->lastname, 'Doe');
         $this->assertEquals($mergedModel->age, 33);
     }
+
+    public function test_it_saves_the_merged_model()
+    {
+        $baseModel = DummyContact::create(['firstname' => 'John', 'lastname' => 'Doe', 'age' => 33]);
+        $dupeModel = DummyContact::create(['firstname' => 'John', 'lastname' => 'Doer', 'age' => 33, 'phone' => '+1 123 456 789']);
+
+        $modelMerge = new ModelMerge();
+        $baseModel = $modelMerge->setBase($baseModel)->setDupe($dupeModel)->unifyOnBase();
+
+        // Merge was correct
+        $this->assertEquals($baseModel->firstname, 'John');
+        $this->assertEquals($baseModel->lastname, 'Doe');
+        $this->assertEquals($baseModel->age, 33);
+        $this->assertEquals($baseModel->phone, '+1 123 456 789');
+
+        // Base was saved and dupe was deleted
+        $this->assertEquals(true, $baseModel->exists);
+        $this->assertEquals(false, $dupeModel->exists);
+    }
 }
