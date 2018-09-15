@@ -15,16 +15,4 @@ class DummyContact extends Model
     protected $hidden = ['id'];
     
     protected $dates = ['created_at', 'deleted_at'];
-
-    public function save(array $options = [])
-    {
-        $this->exists = true;
-        $this->wasRecentlyCreated = true;
-    }
-
-    public function delete()
-    {
-        $this->exists = false;
-        $this->wasRecentlyCreated = false;
-    }
 }
