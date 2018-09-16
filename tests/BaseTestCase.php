@@ -34,6 +34,14 @@ abstract class BaseTestCase extends OrchestraTestCase
             $table->string('address')->nullable();
             $table->timestamps();
         });
+
+        Capsule::schema()->create('dummy_sheep', function (Blueprint $table) {
+            $table->increments('id');
+            $table->integer('dummy_contact_id');
+            $table->string('name');
+            $table->string('color')->nullable();
+            $table->timestamps();
+        });
     }
 
     /**

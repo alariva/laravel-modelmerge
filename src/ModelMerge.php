@@ -37,6 +37,13 @@ class ModelMerge
      */
     protected $keys = null;
 
+    /**
+     * Relationships to be transferred.
+     * 
+     * @var array
+     */
+    protected $relationships = [];
+
     public function __construct($strategy = null)
     {
         $this->useStrategy($strategy);
@@ -156,6 +163,8 @@ class ModelMerge
     public function merge()
     {
         $this->validateKeys();
+        
+        $this->transferRelationships();
 
         return $this->strategy->merge($this->modelA, $this->modelB);
     }
@@ -185,7 +194,7 @@ class ModelMerge
      */
     public function preferOldest()
     {
-        if ($this->modelB->created_at < $this->modelA->created_at){
+        if ($this->modelB->created_at < $this->modelA->created_at) {
             $this->swapPriority();
         }
 
@@ -199,7 +208,7 @@ class ModelMerge
      */
     public function preferNewest()
     {
-        if ($this->modelB->created_at > $this->modelA->created_at){
+        if ($this->modelB->created_at > $this->modelA->created_at) {
             $this->swapPriority();
         }
 
@@ -219,6 +228,27 @@ class ModelMerge
         $this->modelB = $tmp;
 
         return $this;
+    }
+
+    public function withRelationships(array $relationships)
+    {
+        $this->relationships = $relationships;
+
+        return $this;
+    }
+
+    public function transferRelationships()
+    {
+        foreach ($this->relationships as $relationship) {
+            $this->transferChilds($relationship);
+        }
+    }
+
+    public function transferChilds($relationship)
+    {
+        foreach ($this->modelB->$relationship as $child) {
+            $this->modelA->$relationship()->save($child);
+        }
     }
 
     protected function validateKeys()
