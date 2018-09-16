@@ -19,6 +19,6 @@ class DummySheep extends Model
 
     public function owner()
     {
-        return $this->belongsTo(DummyContact::class);
+        return $this->belongsTo(DummyContact::class, 'dummy_contact_id');
     }
 }

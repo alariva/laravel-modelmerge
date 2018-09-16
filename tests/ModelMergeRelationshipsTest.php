@@ -50,4 +50,69 @@ class ModelMergeRelationshipsTest extends BaseTestCase
         // And total count of child models was preserved
         $this->assertEquals(DummySheep::count(), 3);
     }
+
+    public function test_it_aborts_merge_on_belong_to_diverge()
+    {
+        $shepherdJohn = DummyContact::create(['firstname'  => 'John',
+                                              'lastname'   => 'Doe',]);
+        $shepherdMatt = DummyContact::create(['firstname'  => 'Matt',
+                                              'lastname'   => 'Power',]);
+
+        $sheepWhiteDolly = DummySheep::make(['name' => 'Dolly', 'color' => 'white']);
+        $sheepBlackDolly = DummySheep::make(['name' => 'Dolly', 'color' => 'black']);
+
+        $shepherdJohn->sheeps()->save($sheepWhiteDolly);
+        $shepherdMatt->sheeps()->save($sheepBlackDolly);
+
+        $modelMerge = new ModelMerge();
+
+        $this->assertEquals($shepherdJohn->sheeps()->count(), 1);
+        $this->assertEquals($shepherdMatt->sheeps()->count(), 1);
+
+        $this->expectException(\Alariva\ModelMerge\Exceptions\ModelsBelongToDivergedParentsException::class);
+
+        $mergedModel = $modelMerge->belongsTo('owner')
+                                  ->setBase($sheepWhiteDolly)
+                                  ->setDupe($sheepBlackDolly)
+                                  ->unifyOnBase();
+
+        // Relationships were untouched
+        $this->assertEquals($shepherdJohn->sheeps()->count(), 1);
+        $this->assertEquals($shepherdMatt->sheeps()->count(), 1);
+
+        // And total count of child models was preserved
+        $this->assertEquals(DummySheep::count(), 2);
+    }
+
+    public function test_it_merges_on_belong_to_same_parent()
+    {
+        $shepherd = DummyContact::create(['firstname'  => 'John',
+                                          'lastname'   => 'Doe',]);
+
+        $sheepBaseDolly = DummySheep::make(['name' => 'Dolly', 'color' => 'white']);
+        $sheepDupeDolly = DummySheep::make(['name' => 'Dolly', 'color' => 'white']);
+
+        $shepherd->sheeps()->save($sheepBaseDolly);
+        $shepherd->sheeps()->save($sheepDupeDolly);
+
+        $modelMerge = new ModelMerge();
+
+        $this->assertEquals($shepherd->sheeps()->count(), 2);
+
+        $mergedModel = $modelMerge->belongsTo('owner')
+                                  ->setBase($sheepBaseDolly)
+                                  ->setDupe($sheepDupeDolly)
+                                  ->unifyOnBase();
+
+        // Merge was correct
+        $this->assertEquals($mergedModel->name, 'Dolly');
+        $this->assertEquals($mergedModel->color, 'white');
+        $this->assertEquals($mergedModel->owner->id, $shepherd->id);
+
+        // Relationships were untouched
+        $this->assertEquals($shepherd->sheeps()->count(), 1);
+
+        // And total count of child models was preserved
+        $this->assertEquals(DummySheep::count(), 1);
+    }
 }

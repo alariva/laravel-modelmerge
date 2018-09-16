@@ -2,6 +2,7 @@
 
 namespace Alariva\ModelMerge;
 
+use Alariva\ModelMerge\Exceptions\ModelsBelongToDivergedParentsException;
 use Alariva\ModelMerge\Exceptions\ModelsNotDupeException;
 use Alariva\ModelMerge\Strategies\MergeSimple;
 use Alariva\ModelMerge\Strategies\ModelMergeStrategy;
@@ -43,6 +44,13 @@ class ModelMerge
      * @var array
      */
     protected $relationships = [];
+
+    /**
+     * Belongs to relationship (constraint).
+     * 
+     * @var string
+     */
+    protected $belongsTo = null;
 
     public function __construct($strategy = null)
     {
@@ -164,6 +172,8 @@ class ModelMerge
     {
         $this->validateKeys();
         
+        $this->validateBelongsToSameParent();
+        
         $this->transferRelationships();
 
         return $this->strategy->merge($this->modelA, $this->modelB);
@@ -230,6 +240,13 @@ class ModelMerge
         return $this;
     }
 
+    public function belongsTo($belongsTo = null)
+    {
+        $this->belongsTo = $belongsTo;
+
+        return $this;
+    }
+
     public function withRelationships(array $relationships)
     {
         $this->relationships = $relationships;
@@ -262,6 +279,17 @@ class ModelMerge
 
         if ($dataA != $dataB) {
             throw new ModelsNotDupeException('Models are not dupes', 1);
+        }
+    }
+
+    protected function validateBelongsToSameParent()
+    {
+        if ($this->belongsTo === null) {
+            return;
+        }
+
+        if ($this->modelA->{$this->belongsTo} != $this->modelB->{$this->belongsTo}) {
+            throw new ModelsBelongToDivergedParentsException('Models do not belong to same parent', 1);
         }
     }
 }
