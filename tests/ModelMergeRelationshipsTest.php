@@ -71,7 +71,7 @@ class ModelMergeRelationshipsTest extends BaseTestCase
 
         $this->expectException(\Alariva\ModelMerge\Exceptions\ModelsBelongToDivergedParentsException::class);
 
-        $mergedModel = $modelMerge->belongsTo('owner')
+        $mergedModel = $modelMerge->mustBelongToSame('owner')
                                   ->setBase($sheepWhiteDolly)
                                   ->setDupe($sheepBlackDolly)
                                   ->unifyOnBase();
@@ -99,7 +99,7 @@ class ModelMergeRelationshipsTest extends BaseTestCase
 
         $this->assertEquals($shepherd->sheeps()->count(), 2);
 
-        $mergedModel = $modelMerge->belongsTo('owner')
+        $mergedModel = $modelMerge->mustBelongToSame('owner')
                                   ->setBase($sheepBaseDolly)
                                   ->setDupe($sheepDupeDolly)
                                   ->unifyOnBase();

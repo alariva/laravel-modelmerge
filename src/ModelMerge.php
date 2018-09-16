@@ -247,6 +247,17 @@ class ModelMerge
         return $this;
     }
 
+    /**
+     * Alias for belongsTo
+     * 
+     * @param  string $belongsTo Relationship name
+     * @return $this
+     */
+    public function mustBelongToSame($belongsTo = null)
+    {
+        return $this->belongsTo($belongsTo);
+    }
+
     public function withRelationships(array $relationships)
     {
         $this->relationships = $relationships;
