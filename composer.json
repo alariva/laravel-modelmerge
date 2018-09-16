@@ -38,5 +38,10 @@
                 "ModelMerge": "Alariva\\ModelMerge\\Facades\\ModelMerge"
             }
         }
+    },
+    "scripts": {
+        "coverage-report": [
+            "php -d xdebug.profiler_enable=On vendor/bin/phpunit --coverage-html tests/_report/"
+        ]
     }
 }
