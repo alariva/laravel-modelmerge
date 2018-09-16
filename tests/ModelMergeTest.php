@@ -21,6 +21,32 @@ class ModelMergeTest extends BaseTestCase
         $this->assertInstanceOf(Model::class, $mergedModel, 'Merged model should extend an Eloquent Model');
     }
 
+    public function test_it_provides_getter_for_base()
+    {
+        $modelA = DummyContact::make(['firstname' => 'John']);
+        $modelB = DummyContact::make(['firstname' => 'John', 'lastname' => 'Doe']);
+
+        $modelMerge = new ModelMerge();
+        $modelMerge->setModelA($modelA)->setModelB($modelB);
+        $baseModel = $modelMerge->getBase();
+
+        $this->assertInstanceOf(Model::class, $baseModel);
+        $this->assertEquals($modelA, $baseModel);
+    }
+
+    public function test_it_provides_getter_for_dupe()
+    {
+        $modelA = DummyContact::make(['firstname' => 'John']);
+        $modelB = DummyContact::make(['firstname' => 'John', 'lastname' => 'Doe']);
+
+        $modelMerge = new ModelMerge();
+        $modelMerge->setModelA($modelA)->setModelB($modelB);
+        $dupeModel = $modelMerge->getdupe();
+
+        $this->assertInstanceOf(Model::class, $dupeModel);
+        $this->assertEquals($modelB, $dupeModel);
+    }
+
     public function test_it_performs_a_valid_merge()
     {
         $modelA = DummyContact::make(['firstname' => 'John', 'age' => 33]);
@@ -113,18 +139,18 @@ class ModelMergeTest extends BaseTestCase
 
     public function test_it_can_prefer_newest_record()
     {
-        $oldestModel = DummyContact::create(['firstname' => 'John',
-                                             'lastname' => 'Doe',
-                                             'age' => 33,
-                                             'created_at' => Carbon::now()]);
-        $newestModel = DummyContact::create(['firstname' => 'John',
-                                             'lastname' => 'Doe',
-                                             'age' => 34,
-                                             'phone' => '+1 123 456 789',
-                                             'created_at' => Carbon::now()->addDay()]);
+        $oldestModel = DummyContact::create(['firstname'  => 'John',
+                                             'lastname'   => 'Doe',
+                                             'age'        => 33,
+                                             'created_at' => Carbon::now(), ]);
+        $newestModel = DummyContact::create(['firstname'  => 'John',
+                                             'lastname'   => 'Doe',
+                                             'age'        => 34,
+                                             'phone'      => '+1 123 456 789',
+                                             'created_at' => Carbon::now()->addDay(), ]);
 
         $modelMerge = new ModelMerge();
-        
+
         $modelA = $modelMerge->setBase($oldestModel)->setDupe($newestModel)->preferNewest()->getBase();
 
         // Merge was correct
@@ -135,18 +161,18 @@ class ModelMergeTest extends BaseTestCase
 
     public function test_it_can_prefer_oldest_record()
     {
-        $oldestModel = DummyContact::create(['firstname' => 'John',
-                                             'lastname' => 'Doe',
-                                             'age' => 33,
-                                             'created_at' => Carbon::now()]);
-        $newestModel = DummyContact::create(['firstname' => 'John',
-                                             'lastname' => 'Doe',
-                                             'age' => 34,
-                                             'phone' => '+1 123 456 789',
-                                             'created_at' => Carbon::now()->addDay()]);
+        $oldestModel = DummyContact::create(['firstname'  => 'John',
+                                             'lastname'   => 'Doe',
+                                             'age'        => 33,
+                                             'created_at' => Carbon::now(), ]);
+        $newestModel = DummyContact::create(['firstname'  => 'John',
+                                             'lastname'   => 'Doe',
+                                             'age'        => 34,
+                                             'phone'      => '+1 123 456 789',
+                                             'created_at' => Carbon::now()->addDay(), ]);
 
         $modelMerge = new ModelMerge();
-        
+
         $modelA = $modelMerge->setBase($oldestModel)->setDupe($newestModel)->preferOldest()->getBase();
 
         // Merge was correct
@@ -157,18 +183,18 @@ class ModelMergeTest extends BaseTestCase
 
     public function test_it_merges_correctly_after_swap()
     {
-        $oldestModel = DummyContact::create(['firstname' => 'John',
-                                             'lastname' => 'Doe',
-                                             'age' => 33,
-                                             'phone' => '+1 123 456 789',
-                                             'created_at' => Carbon::now()]);
-        $newestModel = DummyContact::create(['firstname' => 'John',
-                                             'lastname' => 'Doe',
-                                             'age' => 34,
-                                             'created_at' => Carbon::now()->addDay()]);
+        $oldestModel = DummyContact::create(['firstname'  => 'John',
+                                             'lastname'   => 'Doe',
+                                             'age'        => 33,
+                                             'phone'      => '+1 123 456 789',
+                                             'created_at' => Carbon::now(), ]);
+        $newestModel = DummyContact::create(['firstname'  => 'John',
+                                             'lastname'   => 'Doe',
+                                             'age'        => 34,
+                                             'created_at' => Carbon::now()->addDay(), ]);
 
         $modelMerge = new ModelMerge();
-        
+
         $mergedModel = $modelMerge->setBase($oldestModel)->setDupe($newestModel)->swapPriority()->merge();
 
         // Merge was correct
