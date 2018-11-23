@@ -7,6 +7,7 @@
 [![Maintainability](https://api.codeclimate.com/v1/badges/f8829aab2f787e403d3e/maintainability)](https://codeclimate.com/github/alariva/laravel-modelmerge/maintainability)
 [![Test Coverage](https://api.codeclimate.com/v1/badges/f8829aab2f787e403d3e/test_coverage)](https://codeclimate.com/github/alariva/laravel-modelmerge/test_coverage)
 [![License](https://poser.pugx.org/alariva/modelmerge/license?format=flat)](https://packagist.org/packages/alariva/modelmerge)
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Falariva%2Flaravel-modelmerge.svg?type=shield)](https://app.fossa.io/projects/git%2Bgithub.com%2Falariva%2Flaravel-modelmerge?ref=badge_shield)
 
 Easy merging for Eloquent Models.
 
@@ -62,3 +63,6 @@ If you discover any security related issues, please email author email instead o
 ## License
 
 MIT. Please see the [license file](license.md) for more information.
+
+
+[![FOSSA Status](https://app.fossa.io/api/projects/git%2Bgithub.com%2Falariva%2Flaravel-modelmerge.svg?type=large)](https://app.fossa.io/projects/git%2Bgithub.com%2Falariva%2Flaravel-modelmerge?ref=badge_large)
