@@ -26,28 +26,28 @@ class ModelMerge
 
     /**
      * Merge strategy implementation.
-     * 
+     *
      * @var [type]
      */
     protected $strategy;
 
     /**
      * ID Keys
-     * 
+     *
      * @var array
      */
     protected $keys = null;
 
     /**
      * Relationships to be transferred.
-     * 
+     *
      * @var array
      */
     protected $relationships = [];
 
     /**
      * Belongs to relationship (constraint).
-     * 
+     *
      * @var string
      */
     protected $belongsTo = null;
@@ -59,9 +59,9 @@ class ModelMerge
 
     /**
      * Pick a strategy class for merge operation.
-     * 
+     *
      * @param  Alariva\ModelMerge\Strategies\ModelMergeStrategy $strategy   Instance of a merger strategy
-     * 
+     *
      * @return $this
      */
     public function useStrategy(ModelMergeStrategy $strategy = null)
@@ -73,7 +73,7 @@ class ModelMerge
 
     /**
      * Set model A
-     * 
+     *
      * @param Model $model
      *
      * @return  $this
@@ -107,7 +107,7 @@ class ModelMerge
 
     /**
      * Set model B
-     * 
+     *
      * @param Model $model
      *
      * @return  $this
@@ -145,9 +145,9 @@ class ModelMerge
 
     /**
      * Specify a compound key to match models and verify identity.
-     * 
+     *
      * @param  string|array $keys Keys that make the model identifiable
-     * 
+     *
      * @return $this
      */
     public function withKey($keys)
@@ -165,15 +165,15 @@ class ModelMerge
 
     /**
      * Executes the merge for A and B Models
-     * 
+     *
      * @return Illuminate\Database\Eloquent\Model The model A with merged attributes from model B
      */
     public function merge()
     {
         $this->validateKeys();
-        
+
         $this->validateBelongsToSameParent();
-        
+
         $this->transferRelationships();
 
         return $this->strategy->merge($this->modelA, $this->modelB);
@@ -199,7 +199,7 @@ class ModelMerge
 
     /**
      * Prefer the oldest of the models to be preserved
-     * 
+     *
      * @return $this
      */
     public function preferOldest()
@@ -213,7 +213,7 @@ class ModelMerge
 
     /**
      * Prefer the newest of the models to be preserved
-     * 
+     *
      * @return $this
      */
     public function preferNewest()
@@ -227,7 +227,7 @@ class ModelMerge
 
     /**
      * Swap models from base to dupe and vice versa
-     * 
+     *
      * @return $this
      */
     public function swapPriority()
@@ -249,7 +249,7 @@ class ModelMerge
 
     /**
      * Alias for belongsTo
-     * 
+     *
      * @param  string $belongsTo Relationship name
      * @return $this
      */
@@ -269,6 +269,7 @@ class ModelMerge
     {
         foreach ($this->relationships as $relationship) {
             $this->transferChilds($relationship);
+            unset($this->modelB->$relationship);
         }
     }
 
