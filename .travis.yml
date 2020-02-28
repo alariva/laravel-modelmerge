@@ -3,8 +3,7 @@ language: php
 php:
   - '7.1'
   - '7.2'
-  - nightly
-
+  - '7.3'
 env:
   matrix:
     - PREFER_LOWEST="--prefer-lowest --prefer-stable"
